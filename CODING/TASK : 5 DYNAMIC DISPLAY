@@ -1,0 +1,134 @@
+import React, { useEffect, useState } from "react";
+
+// Real-time channel
+const channel = new BroadcastChannel("classroom-feedback");
+
+function App() {
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState("");
+  const [comment, setComment] = useState("");
+  const [feedbackList, setFeedbackList] = useState([]);
+
+  // Listen for feedback updates
+  useEffect(() => {
+    channel.onmessage = (event) => {
+      setFeedbackList(event.data);
+    };
+  }, []);
+
+  // Submit feedback
+  const submitFeedback = () => {
+    if (!name || !rating) return;
+
+    const newFeedback = {
+      name,
+      rating,
+      comment,
+      time: new Date().toLocaleTimeString(),
+    };
+
+    const updatedList = [...feedbackList, newFeedback];
+    setFeedbackList(updatedList);
+    channel.postMessage(updatedList);
+
+    // Clear form
+    setName("");
+    setRating("");
+    setComment("");
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1>📝 Live Feedback Form</h1>
+
+      {/* Feedback Form */}
+      <div style={styles.card}>
+        <h2>Submit Feedback</h2>
+
+        <input
+          style={styles.input}
+          placeholder="Your Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <select
+          style={styles.input}
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+        >
+          <option value="">Select Rating</option>
+          <option>Excellent</option>
+          <option>Good</option>
+          <option>Average</option>
+          <option>Poor</option>
+        </select>
+
+        <textarea
+          style={styles.textarea}
+          placeholder="Comments (optional)"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+
+        <button style={styles.button} onClick={submitFeedback}>
+          Submit
+        </button>
+      </div>
+
+      {/* Display Feedback */}
+      <div style={styles.card}>
+        <h2>Live Feedback</h2>
+
+        {feedbackList.length === 0 && <p>No feedback yet</p>}
+
+        {feedbackList.map((fb, index) => (
+          <div key={index} style={styles.feedbackItem}>
+            <strong>{fb.name}</strong> ({fb.rating})
+            <p>{fb.comment || "No comments"}</p>
+            <small>{fb.time}</small>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    fontFamily: "Arial, sans-serif",
+    padding: 20,
+    textAlign: "center",
+  },
+  card: {
+    maxWidth: 450,
+    margin: "20px auto",
+    padding: 20,
+    borderRadius: 10,
+    boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+  },
+  input: {
+    width: "100%",
+    padding: 8,
+    margin: "6px 0",
+  },
+  textarea: {
+    width: "100%",
+    padding: 8,
+    margin: "6px 0",
+    height: 60,
+  },
+  button: {
+    width: "100%",
+    padding: 10,
+    marginTop: 10,
+    cursor: "pointer",
+  },
+  feedbackItem: {
+    borderBottom: "1px solid #ccc",
+    padding: "10px 0",
+    textAlign: "left",
+  },
+};
+
+export default App;
