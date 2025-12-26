@@ -1,0 +1,100 @@
+import React, { useState } from "react";
+
+function Quiz() {
+  // Sample questions data
+  const questions = [
+    {
+      question: "What is the capital of France?",
+      options: ["Paris", "London", "Berlin", "Rome"],
+      correctAnswer: "Paris",
+    },
+    {
+      question: "Which language is used for web development?",
+      options: ["Python", "Java", "JavaScript", "C++"],
+      correctAnswer: "JavaScript",
+    },
+    {
+      question: "What is the largest planet in our solar system?",
+      options: ["Earth", "Jupiter", "Saturn", "Mars"],
+      correctAnswer: "Jupiter",
+    },
+    {
+      question: "Which element is denoted by 'O' on the periodic table?",
+      options: ["Oxygen", "Osmium", "Ozone", "Oganesson"],
+      correctAnswer: "Oxygen",
+    },
+  ];
+
+  // State hooks to manage quiz state
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  const currentQuestion = questions[currentQuestionIndex];
+
+  // Handle when an option is selected
+  const handleAnswerSelection = (answer) => {
+    setSelectedAnswer(answer);
+  };
+
+  // Handle moving to the next question
+  const handleNextQuestion = () => {
+    if (selectedAnswer === currentQuestion.correctAnswer) {
+      setScore(score + 1);
+    }
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      setQuizCompleted(true);
+    }
+    setSelectedAnswer(""); // Reset selected answer after moving
+  };
+
+  // Restart the quiz
+  const handleRestart = () => {
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setQuizCompleted(false);
+    setSelectedAnswer("");
+  };
+
+  return (
+    <div>
+      <h1>Quiz Time!</h1>
+      {quizCompleted ? (
+        <div>
+          <h2>Quiz Completed!</h2>
+          <p>Your Score: {score} / {questions.length}</p>
+          <button onClick={handleRestart}>Restart Quiz</button>
+        </div>
+      ) : (
+        <div>
+          <p>{currentQuestion.question}</p>
+          <div>
+            {currentQuestion.options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswerSelection(option)}
+                style={{
+                  backgroundColor: selectedAnswer === option ? "lightblue" : "white",
+                }}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+          <div>
+            <button onClick={handleNextQuestion} disabled={!selectedAnswer}>
+              {currentQuestionIndex < questions.length - 1 ? "Next" : "Finish"}
+            </button>
+          </div>
+          <p>Score: {score}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default Quiz;
