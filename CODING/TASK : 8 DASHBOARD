@@ -1,0 +1,98 @@
+import React, { useState } from "react";
+
+function App() {
+  const [task, setTask] = useState("");
+  const [taskList, setTaskList] = useState([]);
+
+  // Add new task
+  const addTask = () => {
+    if (!task.trim()) return;
+
+    setTaskList([...taskList, task]);
+    setTask("");
+  };
+
+  // Remove task
+  const removeTask = (index) => {
+    const updatedList = taskList.filter((_, i) => i !== index);
+    setTaskList(updatedList);
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1>📝 Task List Dashboard</h1>
+
+      {/* Task Input */}
+      <div style={styles.card}>
+        <input
+          style={styles.input}
+          placeholder="Enter a task"
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+        />
+        <button style={styles.button} onClick={addTask}>
+          Add Task
+        </button>
+      </div>
+
+      {/* Task List */}
+      <div style={styles.card}>
+        <h2>My Tasks</h2>
+
+        {taskList.length === 0 && <p>No tasks added</p>}
+
+        {taskList.map((item, index) => (
+          <div key={index} style={styles.taskItem}>
+            <span>{item}</span>
+            <button
+              style={styles.removeButton}
+              onClick={() => removeTask(index)}
+            >
+              ❌
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    fontFamily: "Arial, sans-serif",
+    padding: 20,
+    textAlign: "center",
+  },
+  card: {
+    maxWidth: 400,
+    margin: "20px auto",
+    padding: 20,
+    borderRadius: 10,
+    boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+  },
+  input: {
+    width: "70%",
+    padding: 8,
+    marginRight: 5,
+  },
+  button: {
+    padding: "8px 15px",
+    cursor: "pointer",
+  },
+  taskItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottom: "1px solid #ccc",
+    padding: "8px 0",
+  },
+  removeButton: {
+    background: "red",
+    color: "white",
+    border: "none",
+    cursor: "pointer",
+    padding: "5px 8px",
+  },
+};
+
+export default App;
