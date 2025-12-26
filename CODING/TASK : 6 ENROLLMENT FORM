@@ -1,0 +1,119 @@
+import React, { useEffect, useState } from "react";
+
+// Real-time communication channel
+const channel = new BroadcastChannel("course-enrollment");
+
+function App() {
+  const [studentName, setStudentName] = useState("");
+  const [course, setCourse] = useState("");
+  const [enrollments, setEnrollments] = useState([]);
+
+  // Listen for real-time enrollment updates
+  useEffect(() => {
+    channel.onmessage = (event) => {
+      setEnrollments(event.data);
+    };
+  }, []);
+
+  // Handle enrollment
+  const enrollCourse = () => {
+    if (!studentName || !course) return;
+
+    const newEnrollment = {
+      name: studentName,
+      course: course,
+      time: new Date().toLocaleTimeString(),
+    };
+
+    const updatedEnrollments = [...enrollments, newEnrollment];
+    setEnrollments(updatedEnrollments);
+    channel.postMessage(updatedEnrollments);
+
+    // Clear form
+    setStudentName("");
+    setCourse("");
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1>📚 Course Enrollment Form</h1>
+
+      {/* Enrollment Form */}
+      <div style={styles.card}>
+        <h2>Enroll in a Course</h2>
+
+        <input
+          style={styles.input}
+          placeholder="Student Name"
+          value={studentName}
+          onChange={(e) => setStudentName(e.target.value)}
+        />
+
+        <select
+          style={styles.input}
+          value={course}
+          onChange={(e) => setCourse(e.target.value)}
+        >
+          <option value="">Select Course</option>
+          <option>Web Development</option>
+          <option>Data Science</option>
+          <option>Machine Learning</option>
+          <option>Cloud Computing</option>
+        </select>
+
+        <button style={styles.button} onClick={enrollCourse}>
+          Enroll
+        </button>
+      </div>
+
+      {/* Enrolled Course List */}
+      <div style={styles.card}>
+        <h2>Enrolled Students (Live)</h2>
+
+        {enrollments.length === 0 && <p>No enrollments yet</p>}
+
+        {enrollments.map((item, index) => (
+          <div key={index} style={styles.listItem}>
+            <strong>{item.name}</strong> enrolled in{" "}
+            <em>{item.course}</em>
+            <br />
+            <small>{item.time}</small>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    fontFamily: "Arial, sans-serif",
+    padding: 20,
+    textAlign: "center",
+  },
+  card: {
+    maxWidth: 450,
+    margin: "20px auto",
+    padding: 20,
+    borderRadius: 10,
+    boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+  },
+  input: {
+    width: "100%",
+    padding: 8,
+    margin: "6px 0",
+  },
+  button: {
+    width: "100%",
+    padding: 10,
+    marginTop: 10,
+    cursor: "pointer",
+  },
+  listItem: {
+    borderBottom: "1px solid #ccc",
+    padding: "10px 0",
+    textAlign: "left",
+  },
+};
+
+export default App;
