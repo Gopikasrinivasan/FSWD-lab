@@ -1,0 +1,48 @@
+import React from "react";
+
+function CabBookingApp() {
+  const bookCab = () => {
+    // Get pickup location
+    const pickup = prompt("Enter Pickup Location:");
+    if (!pickup) {
+      alert("Pickup location is required!");
+      return;
+    }
+
+    // Get drop location
+    const drop = prompt("Enter Drop Location:");
+    if (!drop) {
+      alert("Drop location is required!");
+      return;
+    }
+
+    // Get cab type
+    const cabType = prompt("Enter Cab Type (Mini / Sedan / SUV):");
+    if (!cabType) {
+      alert("Cab type is required!");
+      return;
+    }
+
+    // Confirm booking
+    const confirmBooking = confirm(
+      `Confirm Booking?\n\nPickup: ${pickup}\nDrop: ${drop}\nCab Type: ${cabType}`
+    );
+
+    if (confirmBooking) {
+      alert("🚖 Cab Booked Successfully!\nDriver will contact you soon.");
+    } else {
+      alert("❌ Cab Booking Cancelled.");
+    }
+  };
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h2>Online Cab Booking Application</h2>
+      <button onClick={bookCab} style={{ padding: "10px 20px" }}>
+        Book Cab
+      </button>
+    </div>
+  );
+}
+
+export default CabBookingApp;
