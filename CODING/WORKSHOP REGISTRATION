@@ -1,0 +1,67 @@
+import React, { useState } from "react";
+
+function WorkshopRegistration() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [topic, setTopic] = useState("");
+  const [date, setDate] = useState("");
+
+  return (
+    <div style={{ display: "flex", justifyContent: "space-around", marginTop: "40px" }}>
+      
+      {/* Registration Form */}
+      <div>
+        <h2>Workshop Registration</h2>
+
+        <input
+          type="text"
+          placeholder="Enter Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <br /><br />
+
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br /><br />
+
+        <input
+          type="text"
+          placeholder="Workshop Topic"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+        />
+        <br /><br />
+
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+        <br /><br />
+
+        <button
+          onClick={() => alert("✅ Registration Submitted Successfully!")}
+        >
+          Register
+        </button>
+      </div>
+
+      {/* Live Preview */}
+      <div style={{ border: "1px solid black", padding: "20px", width: "250px" }}>
+        <h3>Live Preview</h3>
+        <p><strong>Name:</strong> {name}</p>
+        <p><strong>Email:</strong> {email}</p>
+        <p><strong>Topic:</strong> {topic}</p>
+        <p><strong>Date:</strong> {date}</p>
+      </div>
+
+    </div>
+  );
+}
+
+export default WorkshopRegistration;
