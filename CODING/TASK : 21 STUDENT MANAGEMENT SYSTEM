@@ -1,0 +1,62 @@
+import React, { useState } from "react";
+
+function StudentDashboard() {
+  const [view, setView] = useState("dashboard");
+
+  const students = [
+    { id: 1, name: "Alice", age: 18, grade: "A" },
+    { id: 2, name: "Bob", age: 19, grade: "B" },
+    { id: 3, name: "Charlie", age: 17, grade: "A+" }
+  ];
+
+  return (
+    <div style={{ width: "700px", margin: "20px auto", textAlign: "center" }}>
+      <h2>Student Management Dashboard</h2>
+
+      {/* Navigation */}
+      <div style={{ marginBottom: "20px" }}>
+        <button onClick={() => setView("dashboard")} style={{ marginRight: "10px" }}>Dashboard</button>
+        <button onClick={() => setView("students")}>Student List</button>
+      </div>
+
+      {/* View Section */}
+      {view === "dashboard" && (
+        <div>
+          <h3>Welcome to the Dashboard</h3>
+          <p>Total Students: {students.length}</p>
+        </div>
+      )}
+
+      {view === "students" && (
+        <div>
+          <h3>Student List</h3>
+          <table
+            style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}
+            border="1"
+          >
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student.id}>
+                  <td>{student.id}</td>
+                  <td>{student.name}</td>
+                  <td>{student.age}</td>
+                  <td>{student.grade}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default StudentDashboard;
