@@ -1,0 +1,54 @@
+import React, { useState } from "react";
+
+function ProductBrowsing() {
+  const [category, setCategory] = useState("all");
+
+  const products = [
+    { id: 1, name: "Laptop", category: "electronics", price: 50000 },
+    { id: 2, name: "Mobile Phone", category: "electronics", price: 20000 },
+    { id: 3, name: "Shirt", category: "clothing", price: 1500 },
+    { id: 4, name: "Jeans", category: "clothing", price: 2500 },
+    { id: 5, name: "Cookbook", category: "books", price: 500 }
+  ];
+
+  const filteredProducts =
+    category === "all"
+      ? products
+      : products.filter((product) => product.category === category);
+
+  return (
+    <div style={{ maxWidth: "800px", margin: "20px auto", textAlign: "center" }}>
+      <h2>Product Browsing Page</h2>
+
+      {/* Category Navigation */}
+      <div style={{ marginBottom: "20px" }}>
+        <button onClick={() => setCategory("all")} style={{ marginRight: "10px" }}>All</button>
+        <button onClick={() => setCategory("electronics")} style={{ marginRight: "10px" }}>Electronics</button>
+        <button onClick={() => setCategory("clothing")} style={{ marginRight: "10px" }}>Clothing</button>
+        <button onClick={() => setCategory("books")}>Books</button>
+      </div>
+
+      {/* Product Listing */}
+      <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
+        {filteredProducts.map((product) => (
+          <div
+            key={product.id}
+            style={{
+              border: "1px solid #ccc",
+              padding: "15px",
+              margin: "10px",
+              width: "180px",
+              textAlign: "center"
+            }}
+          >
+            <h4>{product.name}</h4>
+            <p>Category: {product.category}</p>
+            <p>Price: ₹{product.price}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default ProductBrowsing;
