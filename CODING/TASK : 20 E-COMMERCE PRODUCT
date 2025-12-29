@@ -1,0 +1,63 @@
+import React, { useState } from "react";
+
+function EcommerceApp() {
+  const products = [
+    { id: 1, name: "Laptop", price: 50000 },
+    { id: 2, name: "Mobile Phone", price: 20000 },
+    { id: 3, name: "Headphones", price: 3000 }
+  ];
+
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+    alert(`${product.name} added to cart`);
+  };
+
+  return (
+    <div style={{ maxWidth: "800px", margin: "20px auto", padding: "10px" }}>
+      <h2 style={{ textAlign: "center" }}>E-Commerce Store</h2>
+
+      {/* Product Listing */}
+      <div style={{ display: "flex", justifyContent: "space-around", flexWrap: "wrap" }}>
+        {products.map((product) => (
+          <div
+            key={product.id}
+            style={{
+              border: "1px solid #ccc",
+              padding: "15px",
+              margin: "10px",
+              width: "200px",
+              textAlign: "center"
+            }}
+          >
+            <h4>{product.name}</h4>
+            <p>Price: ₹{product.price}</p>
+            <button onClick={() => addToCart(product)}>
+              Add to Cart
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Cart Section */}
+      <div style={{ marginTop: "30px" }}>
+        <h3>Cart Items ({cart.length})</h3>
+
+        {cart.length === 0 ? (
+          <p>Your cart is empty</p>
+        ) : (
+          <ul>
+            {cart.map((item, index) => (
+              <li key={index}>
+                {item.name} - ₹{item.price}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default EcommerceApp;
