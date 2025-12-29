@@ -1,0 +1,67 @@
+import React, { useState } from "react";
+
+function StudentFeedback() {
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState("");
+  const [comments, setComments] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validation
+    if (name === "" || rating === "" || comments === "") {
+      alert("⚠️ Please fill all fields!");
+      return;
+    }
+
+    alert("✅ Feedback Submitted Successfully!");
+    setSubmitted(true);
+  };
+
+  return (
+    <div style={{ width: "350px", margin: "50px auto", textAlign: "center" }}>
+      <h2>Student Feedback Form</h2>
+
+      {!submitted ? (
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Student Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <br /><br />
+
+          <select value={rating} onChange={(e) => setRating(e.target.value)}>
+            <option value="">Select Rating</option>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+          </select>
+          <br /><br />
+
+          <textarea
+            placeholder="Enter Comments"
+            value={comments}
+            onChange={(e) => setComments(e.target.value)}
+          />
+          <br /><br />
+
+          <button type="submit">Submit Feedback</button>
+        </form>
+      ) : (
+        <div>
+          <h3>Feedback Received</h3>
+          <p><strong>Name:</strong> {name}</p>
+          <p><strong>Rating:</strong> {rating}/5</p>
+          <p><strong>Comments:</strong> {comments}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default StudentFeedback;
