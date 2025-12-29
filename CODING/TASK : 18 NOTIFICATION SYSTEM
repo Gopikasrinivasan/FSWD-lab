@@ -1,0 +1,37 @@
+import React, { useState } from "react";
+
+function DashboardNotifications() {
+  const [notifications, setNotifications] = useState([]);
+
+  const addNotification = () => {
+    const newNotification = `New notification at ${new Date().toLocaleTimeString()}`;
+    setNotifications([...notifications, newNotification]);
+    alert("🔔 New Notification Received!");
+  };
+
+  return (
+    <div style={{ width: "400px", margin: "40px auto", textAlign: "center" }}>
+      <h2>Dashboard</h2>
+
+      <button onClick={addNotification}>
+        Generate Notification
+      </button>
+
+      <h3>
+        Notifications ({notifications.length})
+      </h3>
+
+      {notifications.length === 0 ? (
+        <p>No notifications available</p>
+      ) : (
+        <ul style={{ textAlign: "left" }}>
+          {notifications.map((note, index) => (
+            <li key={index}>{note}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default DashboardNotifications;
